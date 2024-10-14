@@ -74,11 +74,19 @@ fun MoneyWiseApp(
 
                 MovimientosScreen(
                     movimientos = movimientos,
-                    onEditarClicked = {  },
-                    onAgregarClicked = {  },
-                    onDetallesClicked = {}
+                    onMovimientoUpdated = { movimientoActualizado ->
+                        // Aquí defines lo que ocurre cuando se actualiza un movimiento
+                        println("Movimiento actualizado: $movimientoActualizado")
+                    },
+                    onAgregarClicked = {
+                        // Aquí defines lo que ocurre cuando se hace clic en "Agregar"
+                        println("Agregar movimiento")
+                    },
+                    onDetallesClicked = {
+                        // Aquí defines lo que ocurre cuando se hace clic en "Detalles"
+                        println("Ver detalles del movimiento")
+                    }
                 )
-
             }
             composable(MoneyWiseScreen.Profile.route) {
 

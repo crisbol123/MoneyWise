@@ -65,6 +65,11 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation ("androidx.compose.material3:material3:1.0.0")
+    implementation ("androidx.compose.runtime:runtime:1.0.0")
+    implementation ("androidx.compose.foundation:foundation:1.0.0")
+    implementation ("androidx.compose.ui:ui:1.0.0")
+    implementation("androidx.compose.material3:material3:1.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
