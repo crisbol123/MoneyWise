@@ -1,138 +1,24 @@
-/*package edu.unicauca.moneywise.ui
-
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-
-data class Movimiento(
-    val fecha: String,
-    val categoria: String,
-    val descripcion: String,
-    val monto: String
-)
-
-@Composable
-fun MovimientosScreen(
-    movimientos: List<Movimiento>,
-    onEditarClicked: () -> Unit,
-    onAgregarClicked: () -> Unit,
-    onDetallesClicked: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Movimientos",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-                    .background(Color(0xFF8BC34A))
-                    .padding(16.dp)
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(bottom = 16.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .background(Color(0xFFE0E0E0)),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = "Fecha", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Categoría", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Descripción", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Monto", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-            }
-
-            Divider(color = Color.Gray, thickness = 1.dp)
-
-            LazyColumn {
-                items(movimientos) { movimiento ->
-                    MovimientoRow(movimiento)
-                }
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(onClick = { onEditarClicked() }) {
-                Text("Editar")
-            }
-            Button(onClick = { onAgregarClicked() }) {
-                Text("Agregar")
-            }
-            Button(onClick = { onDetallesClicked() }) {
-                Text("Detalles")
-            }
-        }
-    }
-}
-
-@Composable
-fun MovimientoRow(movimiento: Movimiento) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(Color.White)
-            .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(4.dp)),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = movimiento.fecha, modifier = Modifier.weight(1f))
-        Text(text = movimiento.categoria, modifier = Modifier.weight(1f))
-        Text(text = movimiento.descripcion, modifier = Modifier.weight(1f))
-        Text(text = movimiento.monto, modifier = Modifier.weight(1f))
-    }
-}*/
-
 package edu.unicauca.moneywise.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import edu.unicauca.moneywise.R
 
 data class Movimiento(
     val fecha: String,
@@ -145,14 +31,18 @@ data class Movimiento(
 fun MovimientosScreen(
     movimientos: List<Movimiento>,
     onEditarClicked: (Movimiento) -> Unit,
-    onAgregarClicked: () -> Unit,
-    onDetallesClicked: () -> Unit
+    onAgregarClicked: () -> Unit
 ) {
+
+    var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(Color.White)
     ) {
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -160,10 +50,11 @@ fun MovimientosScreen(
         ) {
             Text(
                 text = "Movimientos",
+                color = Color.White,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .padding(vertical = 16.dp)
-                    .background(Color(0xFF8BC34A))
+                    .background(colorResource(id = R.color.green))
                     .padding(16.dp)
             )
         }
@@ -174,24 +65,29 @@ fun MovimientosScreen(
                 .weight(1f)
                 .padding(bottom = 16.dp)
         ) {
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .background(Color(0xFFE0E0E0)),
+                    .background(Color(0xFFE0E0E0))
+                    .border(BorderStroke(1.dp, Color.Gray)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Fecha", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Categoría", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Descripción", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Monto", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                EncabezadoCelda("Fecha", Modifier.weight(1f))
+                EncabezadoCelda("Descripción", Modifier.weight(2f))
+                EncabezadoCelda("Monto", Modifier.weight(1f))
             }
 
             Divider(color = Color.Gray, thickness = 1.dp)
 
             LazyColumn {
                 items(movimientos) { movimiento ->
-                    MovimientoRow(movimiento, onEditarClicked)
+                    val esSeleccionado = movimiento == movimientoSeleccionado
+                    MovimientoRow(
+                        movimiento = movimiento,
+                        esSeleccionado = esSeleccionado,
+                        onClick = { movimientoSeleccionado = movimiento }
+                    )
                 }
             }
         }
@@ -202,32 +98,93 @@ fun MovimientosScreen(
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(onClick = { onAgregarClicked() }) {
+            Button(onClick = { onAgregarClicked() }, colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = R.color.green),
+                contentColor = Color.White
+                )) {
                 Text("Agregar")
             }
-            Button(onClick = { onDetallesClicked() }) {
-                Text("Detalles")
+            Button(
+                onClick = { movimientoSeleccionado?.let { onEditarClicked(it) } },
+                enabled = movimientoSeleccionado != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.green),
+                    contentColor = Color.White
+                )
+
+            ) {
+                Text("Editar Seleccionado")
             }
         }
     }
 }
 
+// Encabezado de la tabla
 @Composable
-fun MovimientoRow(movimiento: Movimiento, onEditClicked: (Movimiento) -> Unit) {
+fun EncabezadoCelda(texto: String, modifier: Modifier = Modifier) {
+    Text(
+        text = texto,
+        fontSize = 12.sp,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = modifier
+            .padding(8.dp)
+            .border(BorderStroke(1.dp, Color.Gray))
+            .background(Color.LightGray)
+            .padding(8.dp)
+    )
+}
+
+@Composable
+fun MovimientoRow(movimiento: Movimiento, esSeleccionado: Boolean, onClick: () -> Unit) {
+    val backgroundColor = if (esSeleccionado) Color(0xFF8BC34A) else Color.White
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(Color.White)
-            .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(4.dp)),
+            .padding(vertical = 4.dp)
+            .background(backgroundColor)
+            .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(4.dp))
+            .padding(8.dp)
+            .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = movimiento.fecha, modifier = Modifier.weight(1f))
-        Text(text = movimiento.categoria, modifier = Modifier.weight(1f))
-        Text(text = movimiento.descripcion, modifier = Modifier.weight(1f))
-        Text(text = movimiento.monto, modifier = Modifier.weight(1f))
-        Button(onClick = { onEditClicked(movimiento) }) {
-            Text("Editar")
-        }
+        CeldaTexto(movimiento.fecha, Modifier.weight(1f))
+        CeldaTexto(movimiento.descripcion, Modifier.weight(2f))
+        CeldaTexto(movimiento.monto, Modifier.weight(1f))
     }
 }
+
+@Composable
+fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
+    Text(
+        text = texto,
+        fontSize = 10.sp,
+        textAlign = TextAlign.Center,
+        modifier = modifier
+            .padding(8.dp)
+            .border(BorderStroke(1.dp, Color.Gray))
+            .padding(8.dp)
+    )
+}
+
+// Función de vista previa
+@Preview
+@Composable
+fun MovimientosScreenPreview() {
+    // Ejemplo de lista de movimientos
+    val movimientosEjemplo = listOf(
+        Movimiento("19/08/2024", "","Supermercado", "$25000"),
+        Movimiento("18/08/2024", "","Gasolina", "$50000"),
+        Movimiento("18/08/2024","","Cine", "$12000"),
+        Movimiento("14/08/2024","", "Mensual", "$200000")
+    )
+
+    // Llamada a la pantalla con datos de ejemplo
+    MovimientosScreen(
+        movimientos = movimientosEjemplo,
+        onEditarClicked = {},
+        onAgregarClicked = {}
+    )
+}
+
