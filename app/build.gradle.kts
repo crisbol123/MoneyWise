@@ -70,6 +70,9 @@ dependencies {
     implementation ("androidx.compose.foundation:foundation:1.0.0")
     implementation ("androidx.compose.ui:ui:1.0.0")
     implementation("androidx.compose.material3:material3:1.1.0")
+    implementation ("androidx.compose.material:material:1.0.5")  // O la última versión disponible
+    implementation ("androidx.compose.ui:ui:1.0.5")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.0.5")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
