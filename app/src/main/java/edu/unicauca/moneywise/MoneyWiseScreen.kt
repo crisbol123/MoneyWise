@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets
 
 enum class MoneyWiseScreen(val route: String) {
     Login("login"),
+    Luna("NewLogin"),
     Home("home"),
     Movimientos("movimientos"),
     Profile("profile"),
