@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
 
 data class Movimiento(
+    val id: Long,
     val fecha: String,
     val categoria: String,
     val descripcion: String,
@@ -33,6 +34,7 @@ fun MovimientosScreen(
     onEditarClicked: (Movimiento) -> Unit,
     onAgregarClicked: () -> Unit
 ) {
+
 
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
@@ -142,13 +144,14 @@ fun MovimientoRow(movimiento: Movimiento, esSeleccionado: Boolean, onClick: () -
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 0.dp)
             .background(backgroundColor)
             .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(4.dp))
-            .padding(8.dp)
+            .padding(2.dp)
             .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+
         CeldaTexto(movimiento.fecha, Modifier.weight(1f))
         CeldaTexto(movimiento.descripcion, Modifier.weight(2f))
         CeldaTexto(movimiento.monto, Modifier.weight(1f))
@@ -164,11 +167,11 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(8.dp)
             .border(BorderStroke(1.dp, Color.Gray))
-            .padding(8.dp)
+            .padding(2.dp)
     )
 }
 
-// Función de vista previa
+/*Función de vista previa
 @Preview
 @Composable
 fun MovimientosScreenPreview() {
@@ -187,4 +190,4 @@ fun MovimientosScreenPreview() {
         onAgregarClicked = {}
     )
 }
-
+*/

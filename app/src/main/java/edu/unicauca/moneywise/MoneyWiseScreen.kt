@@ -1,6 +1,3 @@
-
-package edu.unicauca.moneywise
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,7 +12,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +24,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import edu.unicauca.moneywise.ui.EditMovScreen
 import edu.unicauca.moneywise.ui.LoginScreen
-import edu.unicauca.moneywise.ui.MoneyWiseViewModel
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
 import java.net.URLEncoder
@@ -70,6 +70,8 @@ fun MoneyWiseApp(
     viewModel: MoneyWiseViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
+    var authToken by remember { mutableStateOf("") }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
@@ -85,9 +87,10 @@ fun MoneyWiseApp(
                 .padding(innerPadding)
         ) {
             composable(MoneyWiseScreen.Login.route) {
-                LoginScreen(onNextButtonClicked = {
+                LoginScreen(onLoginSuccess = { token ->
+                    authToken = token
                     navController.navigate(MoneyWiseScreen.Home.route)
-                })
+                } )
             }
 
             composable(MoneyWiseScreen.Home.route) {
@@ -116,7 +119,7 @@ fun MoneyWiseApp(
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
 
-                val movimiento = Movimiento(fecha, categoria, descripcion, monto)
+                val movimiento = Movimiento(1,fecha, categoria, descripcion, monto)
 
                 EditMovScreen(
                     movimiento = movimiento,

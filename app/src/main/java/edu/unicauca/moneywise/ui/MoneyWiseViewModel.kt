@@ -1,24 +1,65 @@
-package edu.unicauca.moneywise.ui
-
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import edu.unicauca.moneywise.ApiService
+import edu.unicauca.moneywise.ui.Movimiento
+import retrofit2.Response
 
 class MoneyWiseViewModel : ViewModel() {
-    // Lista mutable de movimientos
-    var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf(
-        Movimiento("19/08/2024", "Alimentación", "Supermercado", "$25000"),
-        Movimiento("18/08/2024", "Transporte", "Gasolina", "$50000"),
-        Movimiento("18/08/2024", "Entretenimiento", "Cine", "$12000"),
-        Movimiento("14/08/2024", "Ahorro", "Mensual", "$200000")
-    )
 
-    // Función para actualizar un movimiento existente
+    // Retrofit setup
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://tu-servidor.com/") // Cambia a la URL de tu backend
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val apiService: ApiService = retrofit.create(ApiService::class.java)
+
+    // Lista mutable de movimientos
+    var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf()
+
+    init {
+        // Llamar a la función para cargar los movimientos al iniciar el ViewModel
+        fetchMovimientos()
+    }
+
+    // Función para cargar los movimientos desde la API
+    private fun fetchMovimientos() {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getMovimientos()
+                movimientos.clear()
+                movimientos.addAll(response) // Actualiza la lista con los datos de la API
+            } catch (e: Exception) {
+                // Manejar errores aquí (por ejemplo, mostrar un mensaje de error)
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // Función para actualizar un movimiento existente en el servidor
     fun updateMovimiento(oldMovimiento: Movimiento, newMovimiento: Movimiento) {
-        val index = movimientos.indexOf(oldMovimiento)
-        if (index != -1) {
-            movimientos[index] = newMovimiento
+        viewModelScope.launch {
+            try {
+                val response: Response<Void> = apiService.updateMovimiento(oldMovimiento.id, newMovimiento)
+                if (response.isSuccessful) {
+                    // Actualiza localmente la lista de movimientos
+                    val index = movimientos.indexOf(oldMovimiento)
+                    if (index != -1) {
+                        movimientos[index] = newMovimiento
+                    }
+                } else {
+                    // Manejar el caso de error, por ejemplo, un error del servidor
+                    println("Error actualizando movimiento: ${response.errorBody()}")
+                }
+            } catch (e: Exception) {
+                // Manejar errores de la solicitud
+                e.printStackTrace()
+            }
         }
     }
 }
-
