@@ -184,10 +184,12 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
 @Composable
 fun MovimientosScreenPreview() {
     val movimientosEjemplo = listOf(
+
         Movimiento(1, "19/08/2024", "Supermercado", "$25000"),
         Movimiento(2, "18/08/2024", "Gasolina", "$50000"),
         Movimiento(3, "18/08/2024", "Cine", "$12000"),
         Movimiento(4, "14/08/2024", "Mensual", "$200000")
+
     )
 
     MovimientosScreen(
