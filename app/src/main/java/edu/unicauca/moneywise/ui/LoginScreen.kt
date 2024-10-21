@@ -62,18 +62,14 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
 
                 coroutineScope.launch {
                     try {
-                        val response = authService.login(request).execute()
-                        if (response.isSuccessful) {
-                            val token = response.body()?.token
-                            if (token != null) {
-                                onLoginSuccess(token)
-                                // Aquí puedes navegar a la siguiente pantalla
-                            }
-                        } else {
-                            Log.e("LoginError", "Error: ${response.message()}")
+                        val response = authService.login(request)
+                        val token = response.token
+                        if (token != null) {
+                            onLoginSuccess(token)
+                            // Aquí puedes navegar a la siguiente pantalla
                         }
                     } catch (e: Exception) {
-                        Log.e("LoginError", "Exception: ${e.message}")
+                        Log.e("LoginError", "Exception: ${e.message}", e)
                     }
                 }
             },
@@ -83,5 +79,4 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
         }
     }
 }
-
 

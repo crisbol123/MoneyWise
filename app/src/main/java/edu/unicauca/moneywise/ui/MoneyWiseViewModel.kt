@@ -13,13 +13,12 @@ class MoneyWiseViewModel : ViewModel() {
 
     // Retrofit setup
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://tu-servidor.com/") // Cambia a la URL de tu backend
+        .baseUrl("http://192.168.1.40:8090/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     private val apiService: ApiService = retrofit.create(ApiService::class.java)
 
-    // Lista mutable de movimientos
     var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf()
 
     init {

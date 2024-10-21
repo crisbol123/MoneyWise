@@ -99,7 +99,7 @@ fun MoneyWiseApp(
 
             composable(MoneyWiseScreen.Movimientos.route) {
                 MovimientosScreen(
-                    movimientos = viewModel.movimientos.toList(), // Usar la lista del ViewModel
+                    movimientos = viewModel.movimientos.toList(),
                     onEditarClicked = { movimiento ->
                         val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
                         val encodedCategoria = encodeUrlParam(movimiento.categoria)

@@ -6,5 +6,5 @@ import retrofit2.http.POST
 
 interface AuthService {
     @POST("login")
-    fun login(@Body request: LoginRequest): Call<AuthTokenResponse>
+    suspend fun login(@Body request: LoginRequest): AuthResponse
 }
