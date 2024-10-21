@@ -39,6 +39,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+
 import edu.unicauca.moneywise.R
 import edu.unicauca.moneywise.ui.theme.Black
 import edu.unicauca.moneywise.ui.theme.BlueGray
@@ -161,6 +162,7 @@ private fun TopSection() {
     Box(
         contentAlignment = Alignment.TopCenter
     ) {
+
         Image(
             modifier = Modifier
                 .fillMaxWidth()
@@ -200,6 +202,7 @@ private fun TopSection() {
             color = uiColor,
             onTextLayout ={}
         )
+
 
     }
 }
