@@ -31,9 +31,9 @@ data class Movimiento(
 fun MovimientosScreen(
     movimientos: List<Movimiento>,
     onEditarClicked: (Movimiento) -> Unit,
-    onAgregarClicked: () -> Unit
+    onAgregarClicked: () -> Unit,
+    onDetallesClicked: (Movimiento) -> Unit
 ) {
-
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
     Column(
@@ -42,7 +42,6 @@ fun MovimientosScreen(
             .padding(16.dp)
             .background(Color.White)
     ) {
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -65,7 +64,6 @@ fun MovimientosScreen(
                 .weight(1f)
                 .padding(bottom = 16.dp)
         ) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,7 +99,7 @@ fun MovimientosScreen(
             Button(onClick = { onAgregarClicked() }, colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.green),
                 contentColor = Color.White
-                )) {
+            )) {
                 Text("Agregar")
             }
             Button(
@@ -111,15 +109,23 @@ fun MovimientosScreen(
                     containerColor = colorResource(id = R.color.green),
                     contentColor = Color.White
                 )
-
             ) {
-                Text("Editar Seleccionado")
+                Text("Editar")
+            }
+            Button(
+                onClick = { movimientoSeleccionado?.let { onDetallesClicked(it) } },
+                enabled = movimientoSeleccionado != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.green),
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Detalles")
             }
         }
     }
 }
 
-// Encabezado de la tabla
 @Composable
 fun EncabezadoCelda(texto: String, modifier: Modifier = Modifier) {
     Text(
@@ -168,11 +174,9 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
     )
 }
 
-// Función de vista previa
 @Preview
 @Composable
 fun MovimientosScreenPreview() {
-    // Ejemplo de lista de movimientos
     val movimientosEjemplo = listOf(
         Movimiento("19/08/2024", "","Supermercado", "$25000"),
         Movimiento("18/08/2024", "","Gasolina", "$50000"),
@@ -180,11 +184,10 @@ fun MovimientosScreenPreview() {
         Movimiento("14/08/2024","", "Mensual", "$200000")
     )
 
-    // Llamada a la pantalla con datos de ejemplo
     MovimientosScreen(
         movimientos = movimientosEjemplo,
         onEditarClicked = {},
-        onAgregarClicked = {}
+        onAgregarClicked = {},
+        onDetallesClicked = {}
     )
 }
-
