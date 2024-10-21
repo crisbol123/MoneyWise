@@ -1,3 +1,7 @@
+
+package edu.unicauca.moneywise
+
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,15 +30,19 @@ import edu.unicauca.moneywise.ui.EditMovScreen
 import edu.unicauca.moneywise.ui.LoginScreen
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
+import edu.unicauca.moneywise.ui.CompleteScreen
+import edu.unicauca.moneywise.ui.DetallesMovScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 enum class MoneyWiseScreen(val route: String) {
     Login("login"),
+    Luna("NewLogin"),
     Home("home"),
     Movimientos("movimientos"),
     Profile("profile"),
-    EditMov("edit_mov")
+    EditMov("edit_mov"),
+    DetallesMov("detalles_mov")
 }
 
 fun encodeUrlParam(param: String): String {
@@ -109,8 +117,19 @@ fun MoneyWiseApp(
                         navController.navigate(MoneyWiseScreen.EditMov.route + "/$encodedFecha/$encodedCategoria/$encodedDescripcion/$encodedMonto")
                     },
                     onAgregarClicked = { /* Manejar agregar */ },
+                    onDetallesClicked = { movimiento ->
+                        val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
+                        val encodedCategoria = encodeUrlParam(movimiento.categoria)
+                        val encodedDescripcion = encodeUrlParam(movimiento.descripcion)
+                        val encodedMonto = encodeUrlParam(movimiento.monto)
 
+                        navController.navigate(MoneyWiseScreen.DetallesMov.route + "/$encodedFecha/$encodedCategoria/$encodedDescripcion/$encodedMonto")
+                    }
                 )
+            }
+
+            composable(MoneyWiseScreen.Profile.route){
+                CompleteScreen()
             }
 
             composable(MoneyWiseScreen.EditMov.route + "/{fecha}/{categoria}/{descripcion}/{monto}") { backStackEntry ->
@@ -124,13 +143,29 @@ fun MoneyWiseApp(
                 EditMovScreen(
                     movimiento = movimiento,
                     onSave = { updatedMovimiento ->
-                        viewModel.updateMovimiento(movimiento, updatedMovimiento) // Actualizar movimiento en el ViewModel
+                        viewModel.updateMovimiento(movimiento, updatedMovimiento)
                         navController.navigate(MoneyWiseScreen.Movimientos.route) {
                             popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }
                         }
                     },
                     onCancel = {
                         navController.navigate(MoneyWiseScreen.Movimientos.route)
+                    }
+                )
+            }
+
+            composable(MoneyWiseScreen.DetallesMov.route + "/{fecha}/{categoria}/{descripcion}/{monto}") { backStackEntry ->
+                val fecha = backStackEntry.arguments?.getString("fecha")?.replace("-", "/") ?: ""
+                val categoria = backStackEntry.arguments?.getString("categoria") ?: ""
+                val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
+                val monto = backStackEntry.arguments?.getString("monto") ?: ""
+
+                val movimiento = Movimiento(fecha, categoria, descripcion, monto)
+
+                DetallesMovScreen(
+                    movimiento = movimiento,
+                    onBackClick = {
+                        navController.navigateUp()
                     }
                 )
             }
