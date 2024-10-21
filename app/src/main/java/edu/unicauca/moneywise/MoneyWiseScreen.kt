@@ -26,6 +26,8 @@ import edu.unicauca.moneywise.ui.LoginScreen
 import edu.unicauca.moneywise.ui.MoneyWiseViewModel
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
+import edu.unicauca.moneywise.ui.CompleteScreen
+import edu.unicauca.moneywise.ui.ConfigurationScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -109,7 +111,16 @@ fun MoneyWiseApp(
                     onAgregarClicked = { /* Manejar agregar */ },
 
                 )
+
+
             }
+
+            composable(MoneyWiseScreen.Profile.route){
+                CompleteScreen(
+
+                )
+            }
+
 
             composable(MoneyWiseScreen.EditMov.route + "/{fecha}/{categoria}/{descripcion}/{monto}") { backStackEntry ->
                 val fecha = backStackEntry.arguments?.getString("fecha")?.replace("-", "/") ?: ""
