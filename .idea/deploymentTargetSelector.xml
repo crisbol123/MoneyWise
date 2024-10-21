@@ -2,9 +2,7 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-
-      <SelectionState runConfigName="Unnamed (1)">
-
+      <SelectionState runConfigName="MovimientosScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -1,6 +1,4 @@
-
 package edu.unicauca.moneywise
-
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -98,7 +96,7 @@ fun MoneyWiseApp(
                 LoginScreen(onLoginSuccess = { token ->
                     authToken = token
                     navController.navigate(MoneyWiseScreen.Home.route)
-                } )
+                })
             }
 
             composable(MoneyWiseScreen.Home.route) {
@@ -107,7 +105,7 @@ fun MoneyWiseApp(
 
             composable(MoneyWiseScreen.Movimientos.route) {
                 MovimientosScreen(
-                    movimientos = viewModel.movimientos.toList(),
+                    viewModel = viewModel, // Pasando el ViewModel
                     onEditarClicked = { movimiento ->
                         val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
                         val encodedCategoria = encodeUrlParam(movimiento.categoria)
@@ -128,7 +126,7 @@ fun MoneyWiseApp(
                 )
             }
 
-            composable(MoneyWiseScreen.Profile.route){
+            composable(MoneyWiseScreen.Profile.route) {
                 CompleteScreen()
             }
 
@@ -138,7 +136,7 @@ fun MoneyWiseApp(
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
 
-                val movimiento = Movimiento(1,fecha, categoria, descripcion, monto)
+                val movimiento = Movimiento(1, fecha, categoria, descripcion, monto)
 
                 EditMovScreen(
                     movimiento = movimiento,
@@ -160,7 +158,7 @@ fun MoneyWiseApp(
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
 
-                val movimiento = Movimiento(fecha, categoria, descripcion, monto)
+                val movimiento = Movimiento(1, fecha, categoria, descripcion, monto)
 
                 DetallesMovScreen(
                     movimiento = movimiento,

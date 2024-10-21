@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
+import edu.unicauca.moneywise.MoneyWiseViewModel
 
 data class Movimiento(
     val id: Long,
@@ -30,11 +31,13 @@ data class Movimiento(
 
 @Composable
 fun MovimientosScreen(
-    movimientos: List<Movimiento>,
+    viewModel: MoneyWiseViewModel,
     onEditarClicked: (Movimiento) -> Unit,
     onAgregarClicked: () -> Unit,
     onDetallesClicked: (Movimiento) -> Unit
 ) {
+    // Obtenemos los movimientos desde el ViewModel
+    val movimientos by viewModel.movimientos.collectAsState(initial = emptyList())
 
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
@@ -177,23 +180,20 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
     )
 }
 
-
 @Preview
 @Composable
 fun MovimientosScreenPreview() {
     val movimientosEjemplo = listOf(
-        Movimiento("19/08/2024", "","Supermercado", "$25000"),
-        Movimiento("18/08/2024", "","Gasolina", "$50000"),
-        Movimiento("18/08/2024","","Cine", "$12000"),
-        Movimiento("14/08/2024","", "Mensual", "$200000")
+        Movimiento(1, "19/08/2024", "Supermercado", "$25000"),
+        Movimiento(2, "18/08/2024", "Gasolina", "$50000"),
+        Movimiento(3, "18/08/2024", "Cine", "$12000"),
+        Movimiento(4, "14/08/2024", "Mensual", "$200000")
     )
 
     MovimientosScreen(
-        movimientos = movimientosEjemplo,
+        viewModel = MoneyWiseViewModel(), // Reemplaza con una instancia válida en tu código real
         onEditarClicked = {},
         onAgregarClicked = {},
         onDetallesClicked = {}
     )
 }
-
-
