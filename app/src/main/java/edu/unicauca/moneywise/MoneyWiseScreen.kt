@@ -1,6 +1,8 @@
 package edu.unicauca.moneywise
 
+
 import MoneyWiseViewModel
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -101,6 +103,7 @@ fun MoneyWiseApp(
                     authToken = token
                     viewModel.setAuthToken(token)
                     navController.navigate(MoneyWiseScreen.Home.route)
+
                 }, onCreateAccount = {
                     navController.navigate(MoneyWiseScreen.CreateAccount.route)
                 })
@@ -112,6 +115,9 @@ fun MoneyWiseApp(
                         navController.navigate(MoneyWiseScreen.Login.route)
                     }
                 )
+
+                })
+
             }
 
             composable(MoneyWiseScreen.Home.route) {
@@ -120,7 +126,7 @@ fun MoneyWiseApp(
 
             composable(MoneyWiseScreen.Movimientos.route) {
                 MovimientosScreen(
-                    movimientos = viewModel.movimientos.toList(),
+                    viewModel = viewModel, // Pasando el ViewModel
                     onEditarClicked = { movimiento ->
                         val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
                         val encodedCategoria = encodeUrlParam(movimiento.categoria)
@@ -143,8 +149,10 @@ fun MoneyWiseApp(
                 )
             }
 
+
             composable(MoneyWiseScreen.Profile.route){
                 CompleteScreen( usuario = viewModel.usuario!!)
+
             }
 
             composable(MoneyWiseScreen.EditMov.route + "/{id}/{fecha}/{categoria}/{descripcion}/{monto}") { backStackEntry ->
@@ -154,7 +162,9 @@ fun MoneyWiseApp(
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
 
+
                 val movimiento = Movimiento(id, fecha, categoria, descripcion, monto)
+
 
                 EditMovScreen(
                     movimiento = movimiento,
@@ -189,6 +199,17 @@ fun MoneyWiseApp(
                 val categoria = backStackEntry.arguments?.getString("categoria") ?: ""
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
+
+
+                val movimiento = Movimiento(1, fecha, categoria, descripcion, monto)
+
+                DetallesMovScreen(
+                    movimiento = movimiento,
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+
             }
         }
     }
