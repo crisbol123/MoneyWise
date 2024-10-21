@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,6 +32,7 @@ import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
 import edu.unicauca.moneywise.ui.CompleteScreen
 import edu.unicauca.moneywise.ui.CreateAccountScreen
+import edu.unicauca.moneywise.ui.DetallesMovScreen
 import edu.unicauca.moneywise.ui.GuardarMovScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -116,9 +116,9 @@ fun MoneyWiseApp(
                     }
                 )
 
-                })
+                }
 
-            }
+
 
             composable(MoneyWiseScreen.Home.route) {
                 Text("Home")
