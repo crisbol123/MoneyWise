@@ -115,10 +115,7 @@ fun Tarjetas(
                         onTextLayout = {},
                     )
 
-                    /*   Text(  text = subText,
-                           style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
-                           onTextLayout = {},
-                       )*/
+
                 }
 
             }
