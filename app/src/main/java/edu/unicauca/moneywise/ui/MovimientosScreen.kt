@@ -19,8 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
+import edu.unicauca.moneywise.MoneyWiseViewModel
 
 data class Movimiento(
+    val id: Long,
     val fecha: String,
     val categoria: String,
     val descripcion: String,
@@ -29,10 +31,13 @@ data class Movimiento(
 
 @Composable
 fun MovimientosScreen(
-    movimientos: List<Movimiento>,
+    viewModel: MoneyWiseViewModel,
     onEditarClicked: (Movimiento) -> Unit,
-    onAgregarClicked: () -> Unit
+    onAgregarClicked: () -> Unit,
+    onDetallesClicked: (Movimiento) -> Unit
 ) {
+    // Obtenemos los movimientos desde el ViewModel
+    val movimientos by viewModel.movimientos.collectAsState(initial = emptyList())
 
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
@@ -42,7 +47,6 @@ fun MovimientosScreen(
             .padding(16.dp)
             .background(Color.White)
     ) {
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -65,7 +69,6 @@ fun MovimientosScreen(
                 .weight(1f)
                 .padding(bottom = 16.dp)
         ) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,7 +104,7 @@ fun MovimientosScreen(
             Button(onClick = { onAgregarClicked() }, colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.green),
                 contentColor = Color.White
-                )) {
+            )) {
                 Text("Agregar")
             }
             Button(
@@ -111,15 +114,23 @@ fun MovimientosScreen(
                     containerColor = colorResource(id = R.color.green),
                     contentColor = Color.White
                 )
-
             ) {
-                Text("Editar Seleccionado")
+                Text("Editar")
+            }
+            Button(
+                onClick = { movimientoSeleccionado?.let { onDetallesClicked(it) } },
+                enabled = movimientoSeleccionado != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.green),
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Detalles")
             }
         }
     }
 }
 
-// Encabezado de la tabla
 @Composable
 fun EncabezadoCelda(texto: String, modifier: Modifier = Modifier) {
     Text(
@@ -142,13 +153,14 @@ fun MovimientoRow(movimiento: Movimiento, esSeleccionado: Boolean, onClick: () -
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 0.dp)
             .background(backgroundColor)
             .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(4.dp))
-            .padding(8.dp)
+            .padding(2.dp)
             .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+
         CeldaTexto(movimiento.fecha, Modifier.weight(1f))
         CeldaTexto(movimiento.descripcion, Modifier.weight(2f))
         CeldaTexto(movimiento.monto, Modifier.weight(1f))
@@ -164,27 +176,26 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(8.dp)
             .border(BorderStroke(1.dp, Color.Gray))
-            .padding(8.dp)
+            .padding(2.dp)
     )
 }
 
-// Función de vista previa
 @Preview
 @Composable
 fun MovimientosScreenPreview() {
-    // Ejemplo de lista de movimientos
     val movimientosEjemplo = listOf(
-        Movimiento("19/08/2024", "","Supermercado", "$25000"),
-        Movimiento("18/08/2024", "","Gasolina", "$50000"),
-        Movimiento("18/08/2024","","Cine", "$12000"),
-        Movimiento("14/08/2024","", "Mensual", "$200000")
+
+        Movimiento(1, "19/08/2024", "Supermercado", "$25000"),
+        Movimiento(2, "18/08/2024", "Gasolina", "$50000"),
+        Movimiento(3, "18/08/2024", "Cine", "$12000"),
+        Movimiento(4, "14/08/2024", "Mensual", "$200000")
+
     )
 
-    // Llamada a la pantalla con datos de ejemplo
     MovimientosScreen(
-        movimientos = movimientosEjemplo,
+        viewModel = MoneyWiseViewModel(), // Reemplaza con una instancia válida en tu código real
         onEditarClicked = {},
-        onAgregarClicked = {}
+        onAgregarClicked = {},
+        onDetallesClicked = {}
     )
 }
-

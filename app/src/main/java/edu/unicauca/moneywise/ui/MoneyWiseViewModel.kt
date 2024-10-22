@@ -1,24 +1,101 @@
-package edu.unicauca.moneywise.ui
-
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import edu.unicauca.moneywise.ApiService
+import edu.unicauca.moneywise.Usuario
+import edu.unicauca.moneywise.ui.Movimiento
+import retrofit2.Response
 
 class MoneyWiseViewModel : ViewModel() {
-    // Lista mutable de movimientos
-    var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf(
-        Movimiento("19/08/2024", "Alimentación", "Supermercado", "$25000"),
-        Movimiento("18/08/2024", "Transporte", "Gasolina", "$50000"),
-        Movimiento("18/08/2024", "Entretenimiento", "Cine", "$12000"),
-        Movimiento("14/08/2024", "Ahorro", "Mensual", "$200000")
-    )
 
-    // Función para actualizar un movimiento existente
-    fun updateMovimiento(oldMovimiento: Movimiento, newMovimiento: Movimiento) {
-        val index = movimientos.indexOf(oldMovimiento)
-        if (index != -1) {
-            movimientos[index] = newMovimiento
+    private lateinit var authToken: String // Token de autenticación
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("http://192.168.1.13:8090/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val apiService: ApiService = retrofit.create(ApiService::class.java)
+
+    var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf()
+    var usuario: Usuario? = null
+
+    fun setAuthToken(token: String) {
+        authToken = token
+        fetchMovimientos()
+        fetchUsuario()
+    }
+
+
+    private fun fetchMovimientos() {
+        if (::authToken.isInitialized) {
+            viewModelScope.launch {
+                try {
+                    val response = apiService.getMovimientos("Bearer $authToken")
+                    movimientos.clear()
+                    movimientos.addAll(response)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun updateMovimiento(newMovimiento: Movimiento) {
+        if (::authToken.isInitialized) {
+            viewModelScope.launch {
+                try {
+                    val response: Response<Void> = apiService.updateMovimiento(
+                        "Bearer $authToken",
+                        newMovimiento
+                    )
+                    if (response.isSuccessful) {
+                        println("Movimiento actualizado")
+                        fetchMovimientos()
+                    } else {
+                        println("Error actualizando movimiento: ${response.errorBody()}")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun fetchUsuario() {
+        if (::authToken.isInitialized) {
+            viewModelScope.launch {
+                try {
+                    val response =
+                        apiService.getUsuario("Bearer $authToken")
+                    usuario = response
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+    }
+
+    fun saveUsuario(usuario: Usuario) {
+        viewModelScope.launch {
+            try {
+                val response: Response<Void> = apiService.saveUsuario(
+                    usuario
+                )
+                if (response.isSuccessful) {
+                    println("usuario agregado")
+                    fetchMovimientos()
+                } else {
+                    println("Error agregando usuario: ${response.errorBody()}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }
-

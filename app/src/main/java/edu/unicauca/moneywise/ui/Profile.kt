@@ -31,9 +31,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
+import edu.unicauca.moneywise.Usuario
 
 @Composable
-fun ConfigurationScreen() {
+fun ConfigurationScreen( usuario: Usuario) {
     val imageUri= rememberSaveable { mutableStateOf("") }
 
 
@@ -70,11 +71,11 @@ fun ConfigurationScreen() {
                 )
             }
             Spacer(Modifier.height(8.dp))
-            Text(text = "Ricardo Andrés Diaz Muñoz",
+            Text(text = usuario.nombre,
                 style = MaterialTheme.typography.labelMedium.copy(fontSize = 20.sp),
                 onTextLayout = {})
             Spacer(Modifier.height(8.dp))
-            Text(text = "radiaz@unicauca.edu.co",
+            Text(text = usuario.correo,
                 style = MaterialTheme.typography.labelMedium.copy(fontSize = 20.sp),
                 onTextLayout = {}
             )
@@ -85,13 +86,13 @@ fun ConfigurationScreen() {
 
 
 @Composable
-fun CompleteScreen() {
+fun CompleteScreen( usuario: Usuario) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color= MaterialTheme.colorScheme.primaryContainer
     ){
         Column() {
-            ConfigurationScreen()
+            ConfigurationScreen(usuario)
             Preferences()
         }
     }
@@ -104,6 +105,6 @@ fun CompleteScreen() {
 @Composable
 private fun PreviewConfigurationScreen() {
 
-    CompleteScreen()
+    CompleteScreen( Usuario("", "", "", "", ""))
 
 }
