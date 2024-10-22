@@ -4,27 +4,24 @@ import MoneyWiseViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import edu.unicauca.moneywise.MoneyWiseViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DetallesMovScreen(
-    movimientoId: Int,  // Ahora recibimos el ID del movimiento
-    viewModel: MoneyWiseViewModel,
-    onBackClick: () -> Unit
+    movimientoId: Long,
+    onBackClick: () -> Unit,
+    viewModel: MoneyWiseViewModel = viewModel()
 ) {
-    // Cargar los detalles del movimiento por su ID desde el ViewModel
-    val movimiento = viewModel.getMovimientoById(movimientoId)
-
-    // Usamos LaunchedEffect para asegurarnos de que se carguen los datos al iniciar la pantalla
-    LaunchedEffect(movimientoId) {
-        viewModel.loadMovimientoById(movimientoId)
+    val movimiento = remember(movimientoId) {
+        viewModel.getMovimientoById(movimientoId)
     }
 
     Scaffold(
@@ -34,13 +31,13 @@ fun DetallesMovScreen(
             }
         }
     ) { paddingValues ->
-        movimiento?.let { mov ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp)
-            ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            if (movimiento != null) {
                 Text(
                     text = "Detalles del Movimiento",
                     style = MaterialTheme.typography.titleLarge,
@@ -48,18 +45,18 @@ fun DetallesMovScreen(
                 )
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(4.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = "Fecha: ${mov.fecha}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Categoría: ${mov.categoria}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Descripción: ${mov.descripcion}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Monto: ${mov.monto}", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Fecha: ${movimiento.fecha}", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Categoría: ${movimiento.categoria}", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Descripción: ${movimiento.descripcion}", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Monto: ${movimiento.monto}", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
+            } else {
+                Text(text = "Movimiento no encontrado", style = MaterialTheme.typography.bodyLarge)
             }
-        } ?: run {
-            Text(text = "Cargando...", style = MaterialTheme.typography.bodyLarge)
         }
     }
 }

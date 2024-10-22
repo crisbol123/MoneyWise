@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 
 
 
-val Purple80 = Color(0xFFD0BCFF)
+val Purple80 = Color(0xFFCCC2DC)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 
@@ -17,7 +17,9 @@ val Pink40 = Color(0xFF7D5260)
 
 val Black = Color(0xFF000113)
 val LightBlueWhite = Color(0xFFF1F5F9) //Social media background
-val BlueGray = Color(0xFF334155)
+val BlueGray = Color(0x8FBC8F)
+val CalmGreen = Color(0xFF8FBC8F)
+
 
 
 val ColorScheme.focusedTextFieldText

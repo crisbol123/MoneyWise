@@ -36,12 +36,7 @@ import edu.unicauca.moneywise.Usuario
 @Composable
 fun ConfigurationScreen( usuario: Usuario) {
     val imageUri= rememberSaveable { mutableStateOf("") }
-    /*val painter= rememberAsyncImagePainter(
-        if(imageUri.value.isEmpty())
-            R.drawable.ic_user
-        else
-            imageUri.value
-    )*/
+
 
     Surface(
         color= MaterialTheme.colorScheme.primaryContainer
