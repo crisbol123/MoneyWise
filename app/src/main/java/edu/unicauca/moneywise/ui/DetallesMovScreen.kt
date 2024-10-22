@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import edu.unicauca.moneywise.MoneyWiseViewModel
 
 @Composable
 fun DetallesMovScreen(
-    movimientoId: Int,
+    movimientoId: Int,  // Ahora recibimos el ID del movimiento
+    viewModel: MoneyWiseViewModel,
     onBackClick: () -> Unit
 ) {
     // Cargar los detalles del movimiento por su ID desde el ViewModel
