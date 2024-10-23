@@ -102,7 +102,7 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit = {}, onCreateAccount: () -> Un
                 Button(
                     onClick = {
                         val retrofit = Retrofit.Builder()
-                            .baseUrl("http://192.168.1.13:8090/usuarios/")
+                            .baseUrl("http://192.168.131.85:8090/usuarios/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
 

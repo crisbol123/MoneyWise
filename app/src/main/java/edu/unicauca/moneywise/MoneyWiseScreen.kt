@@ -217,7 +217,9 @@ fun MoneyWiseApp(
 
 package edu.unicauca.moneywise
 
+import BalanceScreen
 import MoneyWiseViewModel
+import SobreNosotrosScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -246,6 +248,7 @@ import edu.unicauca.moneywise.ui.LoginScreen
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
 import edu.unicauca.moneywise.ui.CompleteScreen
+import edu.unicauca.moneywise.ui.ContactoScreen
 import edu.unicauca.moneywise.ui.CreateAccountScreen
 import edu.unicauca.moneywise.ui.DetallesMovScreen
 import edu.unicauca.moneywise.ui.GuardarMovScreen
@@ -261,7 +264,9 @@ enum class MoneyWiseScreen(val route: String) {
     EditMov("edit_mov/{id}/{fecha}/{categoria}/{descripcion}/{monto}"),
     GuardarMov("guardar_mov"), // Nueva ruta
     DetallesMov("detalles_mov/{id}/{fecha}/{categoria}/{descripcion}/{monto}"), // Añadido el id
-    CreateAccount("create_account")
+    CreateAccount("create_account"),
+    Contacto("contacto"),
+    SobreNosotros("sobre_nosotros")
 }
 
 fun encodeUrlParam(param: String): String {
@@ -336,72 +341,57 @@ fun MoneyWiseApp(
             }
 
             composable(MoneyWiseScreen.Home.route) {
-                Text("Home")
+               BalanceScreen(viewModel.usuario)
             }
 
             composable(MoneyWiseScreen.Movimientos.route) {
                 MovimientosScreen(
-                    viewModel = viewModel,  // Pasando el ViewModel
+                     movimientos =  viewModel.movimientos,
                     onEditarClicked = { movimiento ->
                         val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
                         val encodedCategoria = encodeUrlParam(movimiento.categoria)
                         val encodedDescripcion = encodeUrlParam(movimiento.descripcion)
-                        val encodedMonto = encodeUrlParam(movimiento.monto)
-
-                        navController.navigate(MoneyWiseScreen.EditMov.route + "/${movimiento.id}/$encodedFecha/$encodedCategoria/$encodedDescripcion/$encodedMonto")
                     },
                     onAgregarClicked = {
                         navController.navigate(MoneyWiseScreen.GuardarMov.route)
                     },
-                    onDetallesClicked = { movimiento ->
-                        val encodedFecha = encodeUrlParam(movimiento.fecha.replace("/", "-"))
-                        val encodedCategoria = encodeUrlParam(movimiento.categoria)
-                        val encodedDescripcion = encodeUrlParam(movimiento.descripcion)
-                        val encodedMonto = encodeUrlParam(movimiento.monto)
+                    onDetallesClicked = {},
+                    onEliminarClicked = { movimiento ->
+                        viewModel.deleteMovimiento(movimiento)
+                    })
 
-                        navController.navigate(MoneyWiseScreen.DetallesMov.route + "/${movimiento.id}/$encodedFecha/$encodedCategoria/$encodedDescripcion/$encodedMonto")
-                    }
-                )
+
+
             }
 
             composable(MoneyWiseScreen.Profile.route) {
-                CompleteScreen(usuario = viewModel.usuario!!)
+                CompleteScreen(usuario = viewModel.usuario!!, navegar = { route ->
+                    navController.navigate(route)
+                })
             }
+            composable( MoneyWiseScreen.Contacto.route){
+                ContactoScreen()
 
-            composable(MoneyWiseScreen.EditMov.route + "/{id}/{fecha}/{categoria}/{descripcion}/{monto}") { backStackEntry ->
-                val id = backStackEntry.arguments?.getString("id")?.toLong() ?: 0L
-                val fecha = backStackEntry.arguments?.getString("fecha")?.replace("-", "/") ?: ""
-                val categoria = backStackEntry.arguments?.getString("categoria") ?: ""
-                val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
-                val monto = backStackEntry.arguments?.getString("monto") ?: ""
-
-                val movimiento = Movimiento(id, fecha, categoria, descripcion, monto)
-
-                EditMovScreen(
-                    movimiento = movimiento,
-                    onSave = { updatedMovimiento ->
-                        viewModel.updateMovimiento(updatedMovimiento)
-                        navController.navigate(MoneyWiseScreen.Movimientos.route) {
-                            popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }
-                        }
-                    },
-                    onCancel = {
-                        navController.navigate(MoneyWiseScreen.Movimientos.route)
-                    }
-                )
             }
+                composable(MoneyWiseScreen.SobreNosotros.route){
+               SobreNosotrosScreen()
+                }
+
+
 
             composable(MoneyWiseScreen.GuardarMov.route) {
                 GuardarMovScreen(
                     onSave = { nuevoMovimiento ->
-                        viewModel.updateMovimiento(nuevoMovimiento)
+                        viewModel.saveMovimiento(nuevoMovimiento)
                         navController.navigate(MoneyWiseScreen.Movimientos.route) {
                             popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }
                         }
                     },
                     onCancel = {
                         navController.navigate(MoneyWiseScreen.Movimientos.route)
-                    }
+                    },
+
+
                 )
             }
 
@@ -412,16 +402,20 @@ fun MoneyWiseApp(
                 val descripcion = backStackEntry.arguments?.getString("descripcion") ?: ""
                 val monto = backStackEntry.arguments?.getString("monto") ?: ""
 
-                val movimiento = Movimiento(id, fecha, categoria, descripcion, monto)
-
+            //    val movimiento = Movimiento(id, fecha, categoria, descripcion, monto, tipoMovimiento = "Egreso")
+/*
                 DetallesMovScreen(
                     movimiento = movimiento,
                     onBackClick = {
                         navController.navigateUp()
                     }
                 )
+                */
+
             }
         }
     }
 }
+
+
 

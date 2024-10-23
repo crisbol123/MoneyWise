@@ -86,14 +86,14 @@ fun ConfigurationScreen( usuario: Usuario) {
 
 
 @Composable
-fun CompleteScreen( usuario: Usuario) {
+fun CompleteScreen( usuario: Usuario, navegar: (String) -> Unit = {}){
     Surface(
         modifier = Modifier.fillMaxSize(),
         color= MaterialTheme.colorScheme.primaryContainer
     ){
         Column() {
             ConfigurationScreen(usuario)
-            Preferences()
+            Preferences(onNavigate = {String -> navegar(String)})
         }
     }
 

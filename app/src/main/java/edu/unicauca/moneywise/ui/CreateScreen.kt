@@ -81,7 +81,8 @@ fun CreateAccountScreen(onAccountCreated: (Usuario) -> Unit) {
                         contrasena = password.value,
                         telefono = phone.value,
                         nombre = name.value,
-                        rol = "USER"
+                        rol = "USER",
+                        estadoDeCuenta = 0.00
                     )
 
 

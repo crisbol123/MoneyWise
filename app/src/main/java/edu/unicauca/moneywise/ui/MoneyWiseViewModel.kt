@@ -120,14 +120,14 @@ class MoneyWiseViewModel : ViewModel() {
     private lateinit var authToken: String
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.13:8090/")
+        .baseUrl("http://192.168.131.85:8090/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     private val apiService: ApiService = retrofit.create(ApiService::class.java)
 
     var movimientos: SnapshotStateList<Movimiento> = mutableStateListOf()
-    var usuario: Usuario? = null
+    var usuario: Usuario = Usuario()
 
     fun setAuthToken(token: String) {
         authToken = token
@@ -173,6 +173,50 @@ class MoneyWiseViewModel : ViewModel() {
             }
         }
     }
+    fun saveMovimiento(newMovimiento: Movimiento) {
+        if (::authToken.isInitialized) {
+            viewModelScope.launch {
+                try {
+                    val response: Response<Void> = apiService.updateMovimiento(
+                        "Bearer $authToken",
+                        newMovimiento
+                    )
+                    if (response.isSuccessful) {
+
+                        println("Movimiento creado/actualizado")
+                     fetchUsuario()
+                        fetchMovimientos()
+                    } else {
+                        println("Error creando/actualizando movimiento: ${response.errorBody()}")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+    fun deleteMovimiento(movimiento: Movimiento) {
+        if (::authToken.isInitialized) {
+            viewModelScope.launch {
+                try {
+                    val response: Response<Void> = apiService.deleteMovimiento(
+                        "Bearer $authToken",
+                        movimiento.id // Aquí pasas solo el ID
+                    )
+                    if (response.isSuccessful) {
+                        println("Movimiento eliminado")
+                        fetchMovimientos()
+                        fetchUsuario()
+                    } else {
+                        println("Error eliminando movimiento: ${response.errorBody()}")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
 
     private fun fetchUsuario() {
         if (::authToken.isInitialized) {
@@ -202,6 +246,7 @@ class MoneyWiseViewModel : ViewModel() {
             }
         }
     }
+
 
     fun getMovimientoById(id: Long): Movimiento? {
         return movimientos.find { it.id == id }

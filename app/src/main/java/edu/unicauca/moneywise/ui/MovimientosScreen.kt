@@ -221,43 +221,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 data class Movimiento(
     val id: Long,
     val fecha: String,
     val categoria: String,
     val descripcion: String,
-    val monto: String
+    val monto: Double,
+    val tipoMovimiento: String
 )
-
-class MoneyWiseViewModel : ViewModel() {
-    private val _movimientos = MutableStateFlow<List<Movimiento>>(emptyList())
-    val movimientos: StateFlow<List<Movimiento>> = _movimientos
-
-    // Función para actualizar la lista de movimientos
-    fun actualizarMovimientos(nuevosMovimientos: List<Movimiento>) {
-        _movimientos.value = nuevosMovimientos
-    }
-}
 
 @Composable
 fun MovimientosScreen(
-    viewModel: MoneyWiseViewModel,
+    movimientos: List<Movimiento>,
     onEditarClicked: (Movimiento) -> Unit,
     onAgregarClicked: () -> Unit,
-    onDetallesClicked: (Movimiento) -> Unit
+    onDetallesClicked: (Movimiento) -> Unit,
+    onEliminarClicked: (Movimiento) -> Unit
 ) {
-    val movimientos = viewModel.movimientos.collectAsState().value
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(Color.White)
+            .background(colorResource(id = R.color.background_color))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -288,6 +276,7 @@ fun MovimientosScreen(
                     .border(BorderStroke(1.dp, Color.Gray)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                EncabezadoCelda("Tipo", Modifier.weight(1f))
                 EncabezadoCelda("Fecha", Modifier.weight(1f))
                 EncabezadoCelda("Descripción", Modifier.weight(2f))
                 EncabezadoCelda("Monto", Modifier.weight(1f))
@@ -316,8 +305,8 @@ fun MovimientosScreen(
             Button(
                 onClick = { onAgregarClicked() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Agregar")
@@ -326,8 +315,8 @@ fun MovimientosScreen(
                 onClick = { movimientoSeleccionado?.let { onEditarClicked(it) } },
                 enabled = movimientoSeleccionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Editar")
@@ -336,11 +325,21 @@ fun MovimientosScreen(
                 onClick = { movimientoSeleccionado?.let { onDetallesClicked(it) } },
                 enabled = movimientoSeleccionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Detalles")
+            }
+            Button(
+                onClick = { movimientoSeleccionado?.let { onEliminarClicked(it) } },
+                enabled = movimientoSeleccionado != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
+                )
+            ) {
+                Text("Eliminar")
             }
         }
     }
@@ -379,9 +378,10 @@ fun MovimientoRow(
             .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        CeldaTexto(movimiento.tipoMovimiento, Modifier.weight(1f))
         CeldaTexto(movimiento.fecha, Modifier.weight(1f))
         CeldaTexto(movimiento.descripcion, Modifier.weight(2f))
-        CeldaTexto(movimiento.monto, Modifier.weight(1f))
+        CeldaTexto(movimiento.monto.toString(), Modifier.weight(1f))
     }
 }
 
@@ -398,15 +398,3 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
-@Composable
-fun MovimientosScreenPreview() {
-    val previewViewModel = MoneyWiseViewModel()
-
-    MovimientosScreen(
-        viewModel = previewViewModel,
-        onEditarClicked = {},
-        onAgregarClicked = {},
-        onDetallesClicked = {}
-    )
-}
