@@ -134,7 +134,7 @@ fun MoneyWiseApp(
             }
 
             composable(MoneyWiseScreen.Home.route) {
-               BalanceScreen(viewModel.usuario)
+               BalanceScreen(moneyWiseViewModel.usuario)
             }
 
             composable(MoneyWiseScreen.Movimientos.route) {
@@ -160,7 +160,7 @@ fun MoneyWiseApp(
                         navController.navigate(MoneyWiseScreen.DetallesMov.route)
                     },
                  onEliminarClicked = { movimiento ->
-                        viewModel.deleteMovimiento(movimiento)
+                     moneyWiseViewModel.deleteMovimiento(movimiento)
                     }
                 )
 
@@ -169,7 +169,7 @@ fun MoneyWiseApp(
 
             composable(MoneyWiseScreen.Profile.route) {
 
-                CompleteScreen(usuario = viewModel.usuario!!, navegar = { route ->
+                CompleteScreen(usuario = moneyWiseViewModel.usuario, navegar = { route ->
                     navController.navigate(route)
                 })
 
@@ -208,7 +208,7 @@ fun MoneyWiseApp(
                 GuardarMovScreen(
                     onSave = { nuevoMovimiento ->
 
-                        viewModel.saveMovimiento(nuevoMovimiento)
+                        moneyWiseViewModel.saveMovimiento(nuevoMovimiento)
 
                         navController.navigate(MoneyWiseScreen.Movimientos.route) {
                             popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }

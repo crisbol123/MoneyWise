@@ -123,7 +123,7 @@ class MoneyWiseViewModel : ViewModel() {
     private lateinit var authToken: String
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.131.85:8090/")
+        .baseUrl("http://192.168.1.13:8090/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

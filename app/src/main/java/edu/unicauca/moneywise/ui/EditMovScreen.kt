@@ -81,7 +81,7 @@ fun EditMovScreen(
             }
             Button(onClick = {
                 // Eliminar el movimiento
-                onSave(movimiento.copy(
+                onSave(movimiento!!.copy(
                     fecha = fechaState.value,
                     categoria = categoriaState.value,
                     descripcion = descripcionState.value,

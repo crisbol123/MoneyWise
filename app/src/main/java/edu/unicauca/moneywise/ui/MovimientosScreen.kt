@@ -35,9 +35,9 @@ data class Movimiento(
 @Composable
 fun MovimientosScreen(
     movimientos: List<Movimiento>,
-    onEditarClicked: (Movimiento) -> Unit,
+    onEditarClicked: (Movimiento?) -> Unit,
     onAgregarClicked: () -> Unit,
-    onDetallesClicked: (Movimiento) -> Unit,
+    onDetallesClicked: (Movimiento?) -> Unit,
     onEliminarClicked: (Movimiento) -> Unit
 ) {
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }

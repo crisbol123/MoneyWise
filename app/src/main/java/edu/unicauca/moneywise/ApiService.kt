@@ -33,6 +33,7 @@ interface ApiService {
 
     @POST("usuarios/save")
     suspend fun saveUsuario( @Body usuario: Usuario): Response<Void>
+
     @PUT("usuarios")
     suspend fun updateUsuario(
         @Body usuario: Usuario
