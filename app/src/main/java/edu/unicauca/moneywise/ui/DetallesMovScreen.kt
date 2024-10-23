@@ -16,14 +16,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DetallesMovScreen(
-    movimientoId: Long,
-    onBackClick: () -> Unit,
-    viewModel: MoneyWiseViewModel = viewModel()
+    movimiento: Movimiento?,
+    onBackClick: () -> Unit
 ) {
-    val movimiento = remember(movimientoId) {
-        viewModel.getMovimientoById(movimientoId)
-    }
-
     Scaffold(
         topBar = {
             Button(onClick = onBackClick) {
@@ -37,25 +32,25 @@ fun DetallesMovScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            if (movimiento != null) {
-                Text(
-                    text = "Detalles del Movimiento",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = "Fecha: ${movimiento.fecha}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Categoría: ${movimiento.categoria}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Descripción: ${movimiento.descripcion}", style = MaterialTheme.typography.bodyLarge)
-                        Text(text = "Monto: ${movimiento.monto}", style = MaterialTheme.typography.bodyLarge)
-                    }
+            Text(
+                text = "Detalles del Movimiento",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Fecha: ${movimiento!!.fecha}",
+                        style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Categoría: ${movimiento.categoria}",
+                        style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Descripción: ${movimiento.descripcion}",
+                        style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Monto: ${movimiento.monto}",
+                        style = MaterialTheme.typography.bodyLarge)
                 }
-            } else {
-                Text(text = "Movimiento no encontrado", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }
