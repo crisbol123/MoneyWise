@@ -21,36 +21,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.unicauca.moneywise.R
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 data class Movimiento(
     val id: Long,
     val fecha: String,
     val categoria: String,
     val descripcion: String,
-    val monto: String
+    val monto: Double,
+    val tipoMovimiento: String
 )
-
 
 
 @Composable
 fun MovimientosScreen(
-    movimientos:List<Movimiento>,
+    movimientos: List<Movimiento>,
+    onEditarClicked: (Movimiento) -> Unit,
     onAgregarClicked: () -> Unit,
-    onEditarClicked: (Movimiento?) -> Unit,
-    onDetallesClicked: (Movimiento?) -> Unit
+    onDetallesClicked: (Movimiento) -> Unit,
+    onEliminarClicked: (Movimiento) -> Unit
 ) {
+    var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
+
 
 
     var movimientoSelecionado by remember { mutableStateOf<Movimiento?>(null)}
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(Color.White)
+            .background(colorResource(id = R.color.background_color))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -81,6 +82,7 @@ fun MovimientosScreen(
                     .border(BorderStroke(1.dp, Color.Gray)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                EncabezadoCelda("Tipo", Modifier.weight(1f))
                 EncabezadoCelda("Fecha", Modifier.weight(1f))
                 EncabezadoCelda("Descripción", Modifier.weight(2f))
                 EncabezadoCelda("Monto", Modifier.weight(1f))
@@ -112,8 +114,8 @@ fun MovimientosScreen(
             Button(
                 onClick = { onAgregarClicked() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Agregar")
@@ -122,8 +124,8 @@ fun MovimientosScreen(
                 onClick = { onEditarClicked(movimientoSelecionado) },
                 enabled = movimientoSelecionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Editar")
@@ -132,11 +134,21 @@ fun MovimientosScreen(
                 onClick = { onDetallesClicked(movimientoSelecionado) },
                 enabled = movimientoSelecionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.green),
-                    contentColor = Color.White
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
                 )
             ) {
                 Text("Detalles")
+            }
+            Button(
+                onClick = { movimientoSeleccionado?.let { onEliminarClicked(it) } },
+                enabled = movimientoSeleccionado != null,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.button_color),
+                    contentColor = colorResource(id = R.color.text_color)
+                )
+            ) {
+                Text("Eliminar")
             }
         }
     }
@@ -175,9 +187,10 @@ fun MovimientoRow(
             .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        CeldaTexto(movimiento.tipoMovimiento, Modifier.weight(1f))
         CeldaTexto(movimiento.fecha, Modifier.weight(1f))
         CeldaTexto(movimiento.descripcion, Modifier.weight(2f))
-        CeldaTexto(movimiento.monto, Modifier.weight(1f))
+        CeldaTexto(movimiento.monto.toString(), Modifier.weight(1f))
     }
 }
 
@@ -192,4 +205,5 @@ fun CeldaTexto(texto: String, modifier: Modifier = Modifier) {
             .border(BorderStroke(1.dp, Color.Gray))
             .padding(2.dp)
     )
+
 }

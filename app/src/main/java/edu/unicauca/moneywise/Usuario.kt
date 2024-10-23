@@ -5,6 +5,7 @@ data class Usuario(
     var contrasena: String = "",
     var telefono: String = "",
     var nombre: String = "",
-    var rol: String = ""
+    var rol: String = "",
+    var estadoDeCuenta: Double = 0.00
 )
 

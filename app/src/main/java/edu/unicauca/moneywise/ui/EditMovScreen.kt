@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 fun EditMovScreen(
     movimiento: Movimiento?,
     onSave: (Movimiento) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+
 ) {
     // Estado para los campos de texto
     val fechaState = remember { mutableStateOf(movimiento!!.fecha) }
@@ -56,11 +57,7 @@ fun EditMovScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TextField(
-            value = montoState.value,
-            onValueChange = { montoState.value = it },
-            label = { Text("Monto") }
-        )
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -81,6 +78,19 @@ fun EditMovScreen(
             }
             Button(onClick = onCancel) {
                 Text("Cancelar")
+            }
+            Button(onClick = {
+                // Eliminar el movimiento
+                onSave(movimiento.copy(
+                    fecha = fechaState.value,
+                    categoria = categoriaState.value,
+                    descripcion = descripcionState.value,
+                    monto = montoState.value
+                ))
+            }
+
+            ) {
+                Text("Eliminar")
             }
         }
     }

@@ -2,7 +2,15 @@ package edu.unicauca.moneywise
 
 import edu.unicauca.moneywise.ui.Movimiento
 import retrofit2.Response
-import retrofit2.http.*
+
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+
 
 interface ApiService {
     @GET("movimientos")
@@ -14,9 +22,21 @@ interface ApiService {
         @Body movimiento: Movimiento
     ): Response<Void>
 
+    @DELETE("movimientos/{id}")
+    suspend fun deleteMovimiento(
+        @Header("Authorization") token: String,
+        @Path("id") id: Long
+    ): Response<Void>
+
     @GET("usuarios")
     suspend fun getUsuario(@Header("Authorization") token: String): Usuario
 
-    @POST("usuarios")
-    suspend fun saveUsuario(@Body usuario: Usuario): Response<Void>
+    @POST("usuarios/save")
+    suspend fun saveUsuario( @Body usuario: Usuario): Response<Void>
+    @PUT("usuarios")
+    suspend fun updateUsuario(
+        @Body usuario: Usuario
+    ): Response<Void>
+
+
 }

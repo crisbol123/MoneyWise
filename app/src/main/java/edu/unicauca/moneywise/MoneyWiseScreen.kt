@@ -2,7 +2,9 @@
 
 package edu.unicauca.moneywise
 
+import BalanceScreen
 import MoneyWiseViewModel
+import SobreNosotrosScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +35,7 @@ import edu.unicauca.moneywise.ui.LoginScreen
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
 import edu.unicauca.moneywise.ui.CompleteScreen
+import edu.unicauca.moneywise.ui.ContactoScreen
 import edu.unicauca.moneywise.ui.CreateAccountScreen
 import edu.unicauca.moneywise.ui.DetallesMovScreen
 import edu.unicauca.moneywise.ui.GuardarMovScreen
@@ -46,9 +49,13 @@ enum class MoneyWiseScreen(val route: String) {
     Movimientos("movimientos"),
     Profile("profile"),
     EditMov("edit_mov/{id}/{fecha}/{categoria}/{descripcion}/{monto}"),
-    GuardarMov("guardar_mov"),
-    DetallesMov("detalles_mov/{id}/{fecha}/{categoria}/{descripcion}/{monto}"),
-    CreateAccount("create_account")
+
+    GuardarMov("guardar_mov"), // Nueva ruta
+    DetallesMov("detalles_mov/{id}/{fecha}/{categoria}/{descripcion}/{monto}"), // Añadido el id
+    CreateAccount("create_account"),
+    Contacto("contacto"),
+    SobreNosotros("sobre_nosotros")
+
 }
 
 fun encodeUrlParam(param: String): String {
@@ -127,11 +134,13 @@ fun MoneyWiseApp(
             }
 
             composable(MoneyWiseScreen.Home.route) {
-                Text("Home")
+               BalanceScreen(viewModel.usuario)
             }
 
             composable(MoneyWiseScreen.Movimientos.route) {
                 MovimientosScreen(
+
+
                     moneyWiseViewModel.movimientos,
 
                     onEditarClicked = {
@@ -149,15 +158,32 @@ fun MoneyWiseApp(
                        movimiento ->
                         compartirMovViewModel.setMovimiento(movimiento)
                         navController.navigate(MoneyWiseScreen.DetallesMov.route)
-                    })
+                    },
+                 onEliminarClicked = { movimiento ->
+                        viewModel.deleteMovimiento(movimiento)
+                    }
+                )
+
 
             }
 
             composable(MoneyWiseScreen.Profile.route) {
-                moneyWiseViewModel.usuario?.let { usuario ->
-                    CompleteScreen(usuario = usuario)
-                }
+
+                CompleteScreen(usuario = viewModel.usuario!!, navegar = { route ->
+                    navController.navigate(route)
+                })
+
             }
+            composable( MoneyWiseScreen.Contacto.route){
+                ContactoScreen()
+
+
+            }
+                composable(MoneyWiseScreen.SobreNosotros.route){
+               SobreNosotrosScreen()
+                }
+
+
 
             composable(
                 MoneyWiseScreen.EditMov.route
@@ -177,30 +203,41 @@ fun MoneyWiseApp(
                 )
             }
 
+
             composable(MoneyWiseScreen.GuardarMov.route) {
                 GuardarMovScreen(
                     onSave = { nuevoMovimiento ->
-                        moneyWiseViewModel.updateMovimiento(nuevoMovimiento)
+
+                        viewModel.saveMovimiento(nuevoMovimiento)
+
                         navController.navigate(MoneyWiseScreen.Movimientos.route) {
                             popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }
                         }
                     },
                     onCancel = {
                         navController.navigate(MoneyWiseScreen.Movimientos.route)
-                    }
+                    },
+
+
                 )
             }
+
 
             composable(
                 MoneyWiseScreen.DetallesMov.route
             ) {
+
                 DetallesMovScreen(
                     movimiento = compartirMovViewModel.selectedMovimiento.collectAsState().value,
                     onBackClick = {
                         navController.navigateUp()
                     }
                 )
+                
+
             }
         }
     }
+
 }
+

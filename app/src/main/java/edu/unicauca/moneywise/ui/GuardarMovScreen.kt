@@ -1,15 +1,14 @@
 package edu.unicauca.moneywise.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuardarMovScreen(
     onSave: (Movimiento) -> Unit,
@@ -20,6 +19,10 @@ fun GuardarMovScreen(
     val categoriaState = remember { mutableStateOf("") }
     val descripcionState = remember { mutableStateOf("") }
     val montoState = remember { mutableStateOf("") }
+
+    // Estado para el tipo de movimiento (Ingreso/Egreso)
+    val tipoMovimientoState = remember { mutableStateOf("Ingreso") }  // Por defecto será "Ingreso"
+    val expanded = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -63,6 +66,45 @@ fun GuardarMovScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // ExposedDropdownMenuBox para seleccionar el tipo de movimiento con icono de flecha
+        ExposedDropdownMenuBox(
+            expanded = expanded.value,
+            onExpandedChange = { expanded.value = !expanded.value }
+        ) {
+            TextField(
+                value = tipoMovimientoState.value,
+                onValueChange = {},
+                readOnly = true,  // Para evitar que el usuario escriba manualmente
+                label = { Text("Tipo de Movimiento") },
+                trailingIcon = {
+                    Icon(Icons.Filled.ArrowDropDown, contentDescription = "Dropdown")
+                },
+                modifier = Modifier.menuAnchor()  // Permite que el menú se ancle al TextField
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded.value,
+                onDismissRequest = { expanded.value = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text("Ingreso") },
+                    onClick = {
+                        tipoMovimientoState.value = "Ingreso"
+                        expanded.value = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Egreso") },
+                    onClick = {
+                        tipoMovimientoState.value = "Egreso"
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -74,8 +116,11 @@ fun GuardarMovScreen(
                     fecha = fechaState.value,
                     categoria = categoriaState.value,
                     descripcion = descripcionState.value,
-                    monto = montoState.value
+                    monto = montoState.value.toDouble(),
+                    tipoMovimiento = tipoMovimientoState.value
                 )
+
+
                 onSave(nuevoMovimiento)
             }) {
                 Text("Guardar")
