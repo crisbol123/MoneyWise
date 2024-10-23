@@ -20,11 +20,8 @@ fun DetallesMovScreen(
     onBackClick: () -> Unit
 ) {
     Scaffold(
-        topBar = {
-            Button(onClick = onBackClick) {
-                Text("Regresar")
-            }
-        }
+
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -50,7 +47,13 @@ fun DetallesMovScreen(
                         style = MaterialTheme.typography.bodyLarge)
                     Text(text = "Monto: ${movimiento.monto}",
                         style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Tipo de Movimiento: ${movimiento.tipoMovimiento}",
+                        style = MaterialTheme.typography.bodyLarge)
                 }
+            }
+            Button(onClick = onBackClick) {
+                Text("Regresar")
+
             }
         }
     }

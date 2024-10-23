@@ -198,13 +198,13 @@ class MoneyWiseViewModel : ViewModel() {
             }
         }
     }
-    fun deleteMovimiento(movimiento: Movimiento) {
+    fun deleteMovimiento(movimiento: Movimiento?) {
         if (::authToken.isInitialized) {
             viewModelScope.launch {
                 try {
                     val response: Response<Void> = apiService.deleteMovimiento(
                         "Bearer $authToken",
-                        movimiento.id // Aquí pasas solo el ID
+                        movimiento!!.id
                     )
                     if (response.isSuccessful) {
                         println("Movimiento eliminado")

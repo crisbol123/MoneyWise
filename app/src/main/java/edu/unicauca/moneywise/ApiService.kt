@@ -2,7 +2,6 @@ package edu.unicauca.moneywise
 
 import edu.unicauca.moneywise.ui.Movimiento
 import retrofit2.Response
-
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -11,12 +10,14 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-
 interface ApiService {
+
+    // Obtener la lista de movimientos, pasando el token como encabezado
     @GET("movimientos")
     suspend fun getMovimientos(@Header("Authorization") token: String): List<Movimiento>
 
-    @PUT("movimientos")
+    // Actualizar un movimiento, también pasando el token
+    @POST("movimientos")
     suspend fun updateMovimiento(
         @Header("Authorization") token: String,
         @Body movimiento: Movimiento
@@ -33,11 +34,9 @@ interface ApiService {
 
     @POST("usuarios/save")
     suspend fun saveUsuario( @Body usuario: Usuario): Response<Void>
-
     @PUT("usuarios")
     suspend fun updateUsuario(
         @Body usuario: Usuario
     ): Response<Void>
-
 
 }

@@ -38,7 +38,7 @@ fun MovimientosScreen(
     onEditarClicked: (Movimiento?) -> Unit,
     onAgregarClicked: () -> Unit,
     onDetallesClicked: (Movimiento?) -> Unit,
-    onEliminarClicked: (Movimiento) -> Unit
+    onEliminarClicked: (Movimiento?) -> Unit
 ) {
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
@@ -141,8 +141,8 @@ fun MovimientosScreen(
                 Text("Detalles")
             }
             Button(
-                onClick = { movimientoSeleccionado?.let { onEliminarClicked(it) } },
-                enabled = movimientoSeleccionado != null,
+                onClick = { onEliminarClicked(movimientoSelecionado) },
+                enabled = movimientoSelecionado != null,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.button_color),
                     contentColor = colorResource(id = R.color.text_color)
@@ -150,6 +150,7 @@ fun MovimientosScreen(
             ) {
                 Text("Eliminar")
             }
+
         }
     }
 }

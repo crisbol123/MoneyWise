@@ -1,5 +1,5 @@
-package edu.unicauca.moneywise.ui
 
+package edu.unicauca.moneywise.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -14,14 +14,13 @@ fun GuardarMovScreen(
     onSave: (Movimiento) -> Unit,
     onCancel: () -> Unit
 ) {
-    // Estado para los campos de texto
-    val fechaState = remember { mutableStateOf("") }
+    val dayState = remember { mutableStateOf("") }
+    val monthState = remember { mutableStateOf("") }
+    val yearState = remember { mutableStateOf("") }
     val categoriaState = remember { mutableStateOf("") }
     val descripcionState = remember { mutableStateOf("") }
     val montoState = remember { mutableStateOf("") }
-
-    // Estado para el tipo de movimiento (Ingreso/Egreso)
-    val tipoMovimientoState = remember { mutableStateOf("Ingreso") }  // Por defecto será "Ingreso"
+    val tipoMovimientoState = remember { mutableStateOf("Ingreso") }
     val expanded = remember { mutableStateOf(false) }
 
     Column(
@@ -33,12 +32,28 @@ fun GuardarMovScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campos de texto para ingresar el nuevo movimiento
-        TextField(
-            value = fechaState.value,
-            onValueChange = { fechaState.value = it },
-            label = { Text("Fecha") }
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextField(
+                value = dayState.value,
+                onValueChange = { dayState.value = it },
+                label = { Text("Día") },
+                modifier = Modifier.weight(1f)
+            )
+            TextField(
+                value = monthState.value,
+                onValueChange = { monthState.value = it },
+                label = { Text("Mes") },
+                modifier = Modifier.weight(1f)
+            )
+            TextField(
+                value = yearState.value,
+                onValueChange = { yearState.value = it },
+                label = { Text("Año") },
+                modifier = Modifier.weight(1f)
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -66,7 +81,6 @@ fun GuardarMovScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ExposedDropdownMenuBox para seleccionar el tipo de movimiento con icono de flecha
         ExposedDropdownMenuBox(
             expanded = expanded.value,
             onExpandedChange = { expanded.value = !expanded.value }
@@ -74,12 +88,12 @@ fun GuardarMovScreen(
             TextField(
                 value = tipoMovimientoState.value,
                 onValueChange = {},
-                readOnly = true,  // Para evitar que el usuario escriba manualmente
+                readOnly = true,
                 label = { Text("Tipo de Movimiento") },
                 trailingIcon = {
                     Icon(Icons.Filled.ArrowDropDown, contentDescription = "Dropdown")
                 },
-                modifier = Modifier.menuAnchor()  // Permite que el menú se ancle al TextField
+                modifier = Modifier.menuAnchor()
             )
 
             ExposedDropdownMenu(
@@ -110,16 +124,16 @@ fun GuardarMovScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(onClick = {
-                // Crear un nuevo movimiento y guardarlo
+                val formattedDate = "${dayState.value.padStart(2, '0')}/${monthState.value.padStart(2, '0')}/${yearState.value}"
+
                 val nuevoMovimiento = Movimiento(
-                    id = 0, // Asumimos que el ID es asignado por el backend
-                    fecha = fechaState.value,
+                    id = 0,
+                    fecha = formattedDate,
                     categoria = categoriaState.value,
                     descripcion = descripcionState.value,
                     monto = montoState.value.toDouble(),
                     tipoMovimiento = tipoMovimientoState.value
                 )
-
 
                 onSave(nuevoMovimiento)
             }) {

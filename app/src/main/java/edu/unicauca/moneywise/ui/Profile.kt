@@ -1,25 +1,11 @@
 package edu.unicauca.moneywise.ui
 
-
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,77 +20,77 @@ import edu.unicauca.moneywise.R
 import edu.unicauca.moneywise.Usuario
 
 @Composable
-fun ConfigurationScreen( usuario: Usuario) {
-    val imageUri= rememberSaveable { mutableStateOf("") }
-
+fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
+    val imageUri = rememberSaveable { mutableStateOf("") }
 
     Surface(
-        color= MaterialTheme.colorScheme.primaryContainer
-    ){
+        color = MaterialTheme.colorScheme.primaryContainer
+    ) {
         Column(
-            modifier= Modifier
+            modifier = Modifier
                 .padding(top = 8.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            horizontalAlignment= Alignment.CenterHorizontally
-        ){
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Card(
-
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.surface),
-                colors= CardDefaults.cardColors(
-                    containerColor= MaterialTheme.colorScheme.surface),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
                 ),
-                shape= CircleShape,
-                modifier= Modifier
+                shape = CircleShape,
+                modifier = Modifier
                     .padding(8.dp)
                     .size(100.dp)
-            ){
+            ) {
                 Image(
-                    painter= painterResource(id = R.drawable.ic_user),
-                    contentDescription= null,
-                    modifier= Modifier
+                    painter = painterResource(id = R.drawable.ic_user),
+                    contentDescription = null,
+                    modifier = Modifier
                         .wrapContentSize()
                         .clickable { },
                     contentScale = ContentScale.Crop
                 )
             }
             Spacer(Modifier.height(8.dp))
-            Text(text = usuario.nombre,
-                style = MaterialTheme.typography.labelMedium.copy(fontSize = 20.sp),
-                onTextLayout = {})
-            Spacer(Modifier.height(8.dp))
-            Text(text = usuario.correo,
+            Text(
+                text = usuario.nombre,
                 style = MaterialTheme.typography.labelMedium.copy(fontSize = 20.sp),
                 onTextLayout = {}
             )
             Spacer(Modifier.height(8.dp))
+            Text(
+                text = usuario.correo,
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = 20.sp),
+                onTextLayout = {}
+            )
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = logout) {
+                Text("Cerrar Sesión")
+            }
+            Spacer(Modifier.height(8.dp))
         }
     }
 }
-
 
 @Composable
-fun CompleteScreen( usuario: Usuario, navegar: (String) -> Unit = {}){
+fun CompleteScreen(usuario: Usuario, navegar: (String) -> Unit = {}, onLogout: () -> Unit = {}) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color= MaterialTheme.colorScheme.primaryContainer
-    ){
-        Column() {
-            ConfigurationScreen(usuario)
-            Preferences(onNavigate = {String -> navegar(String)})
+        color = MaterialTheme.colorScheme.primaryContainer
+    ) {
+        Column {
+            ConfigurationScreen(usuario, logout = { onLogout() })
+            Preferences(onNavigate = { navegar(it) })
         }
     }
-
 }
-
-
 
 @Preview
 @Composable
 private fun PreviewConfigurationScreen() {
-
-    CompleteScreen( Usuario("", "", "", "", ""))
-
+    CompleteScreen(Usuario("", "", "", "", ""))
 }

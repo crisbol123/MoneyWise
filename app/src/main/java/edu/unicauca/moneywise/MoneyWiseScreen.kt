@@ -99,7 +99,7 @@ fun MoneyWiseApp(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != MoneyWiseScreen.Login.route) {
+            if (currentRoute != MoneyWiseScreen.Login.route || currentRoute != MoneyWiseScreen.CreateAccount.route) {
                 MoneyWiseBottomNavigation(navController)
             }
         }
@@ -171,6 +171,9 @@ fun MoneyWiseApp(
 
                 CompleteScreen(usuario = moneyWiseViewModel.usuario, navegar = { route ->
                     navController.navigate(route)
+                }, onLogout = {
+                    authToken = ""
+                    navController.navigate(MoneyWiseScreen.Login.route)
                 })
 
             }
