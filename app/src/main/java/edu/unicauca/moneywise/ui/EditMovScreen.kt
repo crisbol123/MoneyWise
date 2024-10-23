@@ -12,15 +12,15 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EditMovScreen(
-    movimiento: Movimiento,
+    movimiento: Movimiento?,
     onSave: (Movimiento) -> Unit,
     onCancel: () -> Unit
 ) {
     // Estado para los campos de texto
-    val fechaState = remember { mutableStateOf(movimiento.fecha) }
-    val categoriaState = remember { mutableStateOf(movimiento.categoria) }
-    val descripcionState = remember { mutableStateOf(movimiento.descripcion) }
-    val montoState = remember { mutableStateOf(movimiento.monto) }
+    val fechaState = remember { mutableStateOf(movimiento!!.fecha) }
+    val categoriaState = remember { mutableStateOf(movimiento!!.categoria) }
+    val descripcionState = remember { mutableStateOf(movimiento!!.descripcion) }
+    val montoState = remember { mutableStateOf(movimiento!!.monto) }
 
     Column(
         modifier = Modifier
@@ -70,7 +70,7 @@ fun EditMovScreen(
         ) {
             Button(onClick = {
                 // Guardar el movimiento actualizado
-                onSave(movimiento.copy(
+                onSave(movimiento!!.copy(
                     fecha = fechaState.value,
                     categoria = categoriaState.value,
                     descripcion = descripcionState.value,
