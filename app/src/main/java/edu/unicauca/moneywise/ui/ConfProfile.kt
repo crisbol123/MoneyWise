@@ -25,7 +25,7 @@ fun Preferences(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colorResource(id = R.color.background_color)) // Fondo sólido
+            .background(colorResource(id = R.color.background_color))
     ) {
         Column(
             modifier = Modifier
@@ -78,7 +78,7 @@ fun Tarjetas(
         modifier = Modifier
             .padding(top = 10.dp, bottom = 8.dp)
             .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(12.dp)), // Sombra más pronunciada
+            .shadow(8.dp, RoundedCornerShape(12.dp)),
         onClick = onClick
     ) {
         Row(
@@ -91,7 +91,7 @@ fun Tarjetas(
                     modifier = Modifier
                         .size(34.dp)
                         .clip(shape = RoundedCornerShape(12.dp))
-                        .background(colorResource(id = R.color.background_color_light)) // Fondo más armonioso
+                        .background(colorResource(id = R.color.background_color_light))
                 ) {
                     Icon(
                         painter = painterResource(id = icon),

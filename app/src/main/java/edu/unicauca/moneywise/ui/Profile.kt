@@ -40,7 +40,7 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
             .fillMaxSize()
             .background(backgroundColor)
     ) {
-        // Dibujar formas geométricas en el fondo
+
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawCircle(
                 color = Color.White.copy(alpha = 0.1f),
@@ -53,7 +53,7 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
                 center = Offset(300f, 600f)
             )
 
-            // Gráficos abstractos en forma de rectángulos
+
             drawRoundRect(
                 color = Color.White.copy(alpha = 0.06f),
                 topLeft = Offset(200f, 800f),
@@ -61,7 +61,7 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
                 cornerRadius = CornerRadius(20f)
             )
 
-            // Signos de dólar en el fondo
+
             drawContext.canvas.nativeCanvas.drawText(
                 "$", 150f, size.height - 150f, android.graphics.Paint().apply {
                     textSize = 150f
@@ -84,7 +84,7 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
                 .wrapContentHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Card con imagen de perfil mejorada con degradado suave
+
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -94,23 +94,23 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
                             colors = listOf(
                                 Color(0xFF4CAF50).copy(alpha = 0.6f),
                                 Color(0xFF81C784).copy(alpha = 0.3f)
-                            ), // Degradado para el borde con mayor transparencia
+                            ),
                             start = Offset(0f, 0f),
                             end = Offset(120f, 120f)
                         ),
                         shape = CircleShape
                     )
-                    .padding(4.dp) // Espacio para el borde gradiente
-                    .shadow(8.dp, CircleShape) // Sombra pronunciada
-                    .background(Color.White, CircleShape) // Fondo blanco dentro del borde
+                    .padding(4.dp)
+                    .shadow(8.dp, CircleShape)
+                    .background(Color.White, CircleShape)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_user),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(100.dp) // Tamaño de la imagen del ícono
-                        .background(Color.LightGray.copy(alpha = 0.2f), CircleShape) // Fondo transparente para más estilo
+                        .size(100.dp)
+                        .background(Color.LightGray.copy(alpha = 0.2f), CircleShape)
                 )
             }
 
