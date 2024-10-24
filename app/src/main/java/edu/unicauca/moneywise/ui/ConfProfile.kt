@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,11 +22,10 @@ import edu.unicauca.moneywise.R
 fun Preferences(
     onNavigate: (String) -> Unit = {}
 ) {
-    Surface(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
-        color = colorResource(id = R.color.background_color) // Color de fondo más armonioso
+            .background(colorResource(id = R.color.background_color)) // Fondo sólido
     ) {
         Column(
             modifier = Modifier
@@ -76,7 +77,8 @@ fun Tarjetas(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         modifier = Modifier
             .padding(top = 10.dp, bottom = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .shadow(8.dp, RoundedCornerShape(12.dp)), // Sombra más pronunciada
         onClick = onClick
     ) {
         Row(

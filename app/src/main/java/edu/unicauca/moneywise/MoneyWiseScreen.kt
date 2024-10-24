@@ -35,6 +35,7 @@ import edu.unicauca.moneywise.ui.LoginScreen
 import edu.unicauca.moneywise.ui.Movimiento
 import edu.unicauca.moneywise.ui.MovimientosScreen
 import edu.unicauca.moneywise.ui.CompleteScreen
+
 import edu.unicauca.moneywise.ui.ContactoScreen
 import edu.unicauca.moneywise.ui.CreateAccountScreen
 import edu.unicauca.moneywise.ui.DetallesMovScreen
@@ -178,7 +179,7 @@ fun MoneyWiseApp(
 
             }
             composable( MoneyWiseScreen.Contacto.route){
-                ContactoScreen()
+               ContactoScreen()
 
 
             }
