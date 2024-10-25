@@ -106,7 +106,7 @@ fun SobreNosotrosScreen() {
 
             // Texto descriptivo
             Text(
-                text = "Somos estudiantes de Ingeniería Electrónica y Telecomunicaciones de la Universidad del Cauca, énfasis en Telemática. Esta aplicación fue desarrollada como parte de la Electiva de Aplicaciones Móviles.",
+                text = "Somos estudiantes de Ingeniería Electrónica y Telecomunicaciones de la Universidad del Cauca, énfasis en Telemática. Esta aplicación fue desarrollada como parte de la Electiva de Aplicaciones Móviles. MoneyWise es una aplicación de control financiero, con la cual podrás controlar tus gastos e ingresos.",
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp, color = Color.White),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(16.dp)
