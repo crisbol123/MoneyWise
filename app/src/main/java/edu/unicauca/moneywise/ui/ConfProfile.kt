@@ -41,7 +41,9 @@ fun Preferences(
             Tarjetas(
                 icon = R.drawable.ic_whatsapp,
                 mainText = "Contactos",
-                onClick = { onNavigate(MoneyWiseScreen.Contacto.route) }
+                onClick = {
+                    println("Navigating to Contacto")
+                    onNavigate(MoneyWiseScreen.Contacto.route) }
             )
 
             Tarjetas(
@@ -57,7 +59,8 @@ fun Preferences(
             Tarjetas(
                 icon = R.drawable.ic_about,
                 mainText = "Sobre nosotros",
-                onClick = { onNavigate(MoneyWiseScreen.SobreNosotros.route) }
+                onClick = {
+                    onNavigate(MoneyWiseScreen.SobreNosotros.route) }
             )
         }
     }

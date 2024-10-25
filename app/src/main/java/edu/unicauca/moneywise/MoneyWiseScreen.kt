@@ -100,7 +100,7 @@ fun MoneyWiseApp(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != MoneyWiseScreen.Login.route || currentRoute != MoneyWiseScreen.CreateAccount.route) {
+            if (currentRoute != MoneyWiseScreen.Login.route && currentRoute != MoneyWiseScreen.CreateAccount.route) {
                 MoneyWiseBottomNavigation(navController)
             }
         }
@@ -171,6 +171,7 @@ fun MoneyWiseApp(
             composable(MoneyWiseScreen.Profile.route) {
 
                 CompleteScreen(usuario = moneyWiseViewModel.usuario, navegar = { route ->
+                    println("Navigating to $route")
                     navController.navigate(route)
                 }, onLogout = {
                     authToken = ""
@@ -197,6 +198,7 @@ fun MoneyWiseApp(
                     movimiento = compartirMovViewModel.selectedMovimiento.collectAsState().value,
                     onSave = { updatedMovimiento ->
                         moneyWiseViewModel.updateMovimiento(updatedMovimiento)
+
                         navController.navigate(MoneyWiseScreen.Movimientos.route) {
                             popUpTo(MoneyWiseScreen.Movimientos.route) { inclusive = true }
                         }

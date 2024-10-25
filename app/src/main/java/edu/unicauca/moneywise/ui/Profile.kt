@@ -29,7 +29,7 @@ import edu.unicauca.moneywise.R
 import edu.unicauca.moneywise.Usuario
 
 @Composable
-fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
+fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}, navegar: (String) -> Unit = {}) {
     val imageUri = rememberSaveable { mutableStateOf("") }
 
     // Color de fondo sólido
@@ -132,8 +132,8 @@ fun ConfigurationScreen(usuario: Usuario, logout: () -> Unit = {}) {
             }
             Spacer(Modifier.height(16.dp))
 
-            // Sección de Soporte
-            Preferences(onNavigate = { })
+
+            Preferences(onNavigate = { navegar(it) })
         }
     }
 }
@@ -145,8 +145,7 @@ fun CompleteScreen(usuario: Usuario, navegar: (String) -> Unit = {}, onLogout: (
         color = MaterialTheme.colorScheme.primaryContainer
     ) {
         Column {
-            ConfigurationScreen(usuario, logout = { onLogout() })
-            Preferences(onNavigate = { navegar(it) })
+            ConfigurationScreen(usuario, logout = { onLogout() }, navegar={ navegar(it) })
         }
     }
 }

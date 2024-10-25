@@ -167,6 +167,7 @@ class MoneyWiseViewModel : ViewModel() {
                     if (response.isSuccessful) {
                         println("Movimiento actualizado")
                         fetchMovimientos()
+                        fetchUsuario()
                     } else {
                         println("Error actualizando movimiento: ${response.errorBody()}")
                     }

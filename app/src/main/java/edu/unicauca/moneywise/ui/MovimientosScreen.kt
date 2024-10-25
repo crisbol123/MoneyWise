@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,16 +43,17 @@ fun MovimientosScreen(
 ) {
     var movimientoSeleccionado by remember { mutableStateOf<Movimiento?>(null) }
 
-
-
-    var movimientoSelecionado by remember { mutableStateOf<Movimiento?>(null)}
-
+    // Colores definidos
+    val greenPrimary = Color(0xFF1B5E20)
+    val greenSecondary = Color(0xFF81C784)
+    val white = Color(0xFFFFFFFF)
+    val backgroundColor = Color(0xFFE0E0E0)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(colorResource(id = R.color.background_color))
+            .background(greenSecondary)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -60,12 +62,13 @@ fun MovimientosScreen(
         ) {
             Text(
                 text = "Movimientos",
-                color = Color.White,
+                color = white,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .padding(vertical = 16.dp)
-                    .background(colorResource(id = R.color.green))
+                    .background(greenPrimary)
                     .padding(16.dp)
+                    .shadow(2.dp, shape = RoundedCornerShape(8.dp))
             )
         }
 
@@ -92,13 +95,13 @@ fun MovimientosScreen(
 
             LazyColumn {
                 items(movimientos) { movimiento ->
-                    val esSeleccionado = movimiento == movimientoSelecionado
+                    val esSeleccionado = movimiento == movimientoSeleccionado
 
                     MovimientoRow(
                         movimiento = movimiento,
                         esSeleccionado = esSeleccionado,
                         onClick = {
-                          movimientoSelecionado = movimiento
+                            movimientoSeleccionado = movimiento
                         }
                     )
                 }
@@ -108,49 +111,52 @@ fun MovimientosScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
                 onClick = { onAgregarClicked() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.button_color),
-                    contentColor = colorResource(id = R.color.text_color)
-                )
+                    containerColor = greenPrimary,
+                    contentColor = white
+                ),
+                shape = RoundedCornerShape(30.dp)
             ) {
                 Text("Agregar")
             }
             Button(
-                onClick = { onEditarClicked(movimientoSelecionado) },
-                enabled = movimientoSelecionado != null,
+                onClick = { onEditarClicked(movimientoSeleccionado) },
+                enabled = movimientoSeleccionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.button_color),
-                    contentColor = colorResource(id = R.color.text_color)
-                )
+                    containerColor = greenPrimary,
+                    contentColor = white
+                ),
+                shape = RoundedCornerShape(30.dp)
             ) {
                 Text("Editar")
             }
             Button(
-                onClick = { onDetallesClicked(movimientoSelecionado) },
-                enabled = movimientoSelecionado != null,
+                onClick = { onDetallesClicked(movimientoSeleccionado) },
+                enabled = movimientoSeleccionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.button_color),
-                    contentColor = colorResource(id = R.color.text_color)
-                )
+                    containerColor = greenPrimary,
+                    contentColor = white
+                ),
+                shape = RoundedCornerShape(30.dp)
             ) {
                 Text("Detalles")
             }
             Button(
-                onClick = { onEliminarClicked(movimientoSelecionado) },
-                enabled = movimientoSelecionado != null,
+                onClick = { onEliminarClicked(movimientoSeleccionado) },
+                enabled = movimientoSeleccionado != null,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.button_color),
-                    contentColor = colorResource(id = R.color.text_color)
-                )
+                    containerColor = greenPrimary,
+                    contentColor = white
+                ),
+                shape = RoundedCornerShape(30.dp)
             ) {
                 Text("Eliminar")
             }
-
         }
     }
 }
